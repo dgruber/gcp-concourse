@@ -96,12 +96,3 @@ resource "google_sql_database" "diego" {
   count = "1"
 }
 
-resource "google_sql_user" "ert" {
-  name       = "${var.ert_sql_db_username}"
-  depends_on = ["google_sql_database.diego"]
-  password   = "${var.ert_sql_db_password}"
-  instance   = "${google_sql_database_instance.master.name}"
-  host       = "%"
-
-  count = "1"
-}
