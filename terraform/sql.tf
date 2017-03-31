@@ -4,7 +4,7 @@ resource "google_sql_database_instance" "master" {
   name             = "${var.ert_sql_instance_name}"
 
   settings {
-    tier = "db-f1-micro"
+    tier = "D0"
 
     ip_configuration = {
       ipv4_enabled = true
@@ -95,4 +95,15 @@ resource "google_sql_database" "diego" {
 
   count = "1"
 }
+
+resource "google_sql_user" "ert" {
+  name       = "${var.ert_sql_db_username}"
+  depends_on = ["google_sql_database.diego"]
+  password   = "${var.ert_sql_db_password}"
+  instance   = "${google_sql_database_instance.master.name}"
+  host       = "%"
+
+  count = "1"
+}
+
 
